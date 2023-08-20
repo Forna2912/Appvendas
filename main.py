@@ -6,10 +6,13 @@ import requests
 from BanerVenda import *
 from BannerVendedor import *
 import os
+import certifi
 from functools import partial
 import json
 from myfirebase import MyFireBase
 from datetime import date
+
+os.environ['SSL_CERT_FILE'] = certifi.where()
 
 GUI=Builder.load_file('main.kv')
 
