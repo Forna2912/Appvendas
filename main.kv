@@ -1,0 +1,53 @@
+#:include  kv/homepage.kv
+#:include  kv/ajustespage.kv
+#:include  kv/salesmano.kv
+#:include  kv/adicionarvendas.kv
+#:include  kv/mudarperfil.kv
+#:include  kv/acompanharvendedor.kv
+#:include  kv/vervendas.kv
+#:include  kv/paginalogin.kv
+#:include  kv/vendasoutrovendedor.kv
+
+FloatLayout:
+    canvas:
+        Color:
+            rgb:(0.00392, 0.0862, 0.133)
+        Rectangle:
+            size:self.size
+            pos:self.pos
+    Image:
+        pos_hint: {'right':1,'top':0.95}
+        size_hint: 1 , 0.2
+        id:foto_perfil
+        source:'icones/hash.png'
+    ScreenManager:
+        pos_hint:{'right':1,'top':0.7}
+        size_hint: 1 , 0.7
+        id:screen_manager
+        PaginaLogin:
+            name: 'paginalogin'
+            id: paginalogin
+        HomePage:
+            name: 'homepage'
+            id: homepage
+        AjustesPage:
+            name: 'ajustespage'
+            id: ajustespage
+        SalesMano:
+            name: 'salesmano'
+            id: salesmano
+        AdicionarVendas:
+            name:'adicionarvendas'
+            id: adicionarvendas
+        MudarPerfil:
+            name:'mudarperfil'
+            id: mudarperfil
+        AcompanharVendedor:
+            name:'acompanharvendedor'
+            id: acompanharvendedor
+        VerVendas:
+            name:'vervendas'
+            id: vervendas
+        VendasOutroVendedor:
+            name:'vendasoutrovendedor'
+            id:vendasoutrovendedor

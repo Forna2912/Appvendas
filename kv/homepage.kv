@@ -1,0 +1,56 @@
+<HomePage>:
+    FloatLayout:
+        #Geral
+        canvas:
+            Rectangle:
+                size:self.size
+                pos:self.pos
+                source:'icones/bg1.png'
+        Label:
+            canvas.before:
+                Rectangle:
+                    size:self.size
+                    pos:self.pos
+                    source:'icones/botao.png'
+            text:'total de vendas'
+            pos_hint:{'right':0.85,'top':0.95}
+            size_hint:0.7,0.2
+            id:total_vendas
+            markup:True
+
+
+        #Meio
+        ScrollView:
+            size_hint:1,0.63
+            pos_hint:{'right':1,'top':0.75}
+            GridLayout:
+                cols:1
+                id:lista_vendas
+                size_hint_y: None
+                row_default_height:"90dp"
+                height:self.minimum_height
+                row_force_default:True
+                spacing:2,2
+
+
+        #Barra inferior
+        GridLayout:
+            pos_hint: {'right':1 , 'top': 0.12}
+            size_hint: 1,0.12 
+            cols:3
+            canvas:
+                Color:
+                    rgb:(0, 0.556, 0.611)
+                Rectangle:
+                    pos:self.pos
+                    size:self.size
+            ImageButton:
+                on_release:app.mudar_pagina('adicionarvendas')
+                source:'icones/add.png'
+            ImageButton:
+                on_release:app.mudar_pagina('salesmano')
+                source:'icones/salesman.png'
+            ImageButton:
+                on_release:app.mudar_pagina('ajustespage')
+                source:'icones/settings.png'
+        

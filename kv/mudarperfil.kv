@@ -1,0 +1,41 @@
+<MudarPerfil>
+    FloatLayout:
+        # Geral
+        canvas:
+            Rectangle:
+                size:self.size
+                pos:self.pos
+                source:'icones/bg1.png'
+        Label:
+            text:'Selecione sua foto de perfil'
+            pos_hint:{'right':0.85,'top':1.05}
+            size_hint:0.7,0.2
+            bold:True
+            id:id_vendedor
+        ScrollView:
+            size_hint:0.8,0.77
+            pos_hint: {'right': 0.9, 'top':0.9 } 
+            GridLayout:
+                cols:3
+                id:lista_foto_perfil
+                size_hint_y: None
+                row_default_height:"90dp"
+                height:self.minimum_height
+                row_force_default:True
+                spacing:5,5
+
+        #Barra inferior
+        FloatLayout:
+            pos_hint: {'right':1 , 'top': 0.12}
+            size_hint: 1,0.12 
+            canvas:
+                Color:
+                    rgb:(0, 0.556, 0.611)
+                Rectangle:
+                    pos:self.pos
+                    size:self.size
+            ImageButton:
+                pos_hint:{'right':0.33,'top':1}
+                size_hint:0.33,1
+                on_release:app.mudar_pagina('ajustespage')
+                source:'icones/voltar.png'

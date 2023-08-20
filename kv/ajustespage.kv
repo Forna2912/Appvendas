@@ -1,0 +1,74 @@
+<AjustesPage>:
+    FloatLayout:
+        # Geral
+        canvas:
+            Rectangle:
+                size:self.size
+                pos:self.pos
+                source:'icones/bg1.png'
+        Label:
+            canvas.before:
+                Rectangle:
+                    size:self.size
+                    pos:self.pos
+                    source:'icones/botao.png'
+            text:'SEU ID UNICO:'
+            pos_hint:{'right':0.85,'top':0.95}
+            size_hint:0.7,0.2
+            bold:True
+            id:id_vendedor
+
+
+        # Mudar foto perfil
+        LabelButton:
+            text:'Mudar foto de perfil'
+            pos_hint:{'right':0.9,'top':0.75}
+            size_hint:0.5,0.15
+            on_release:app.mudar_pagina('mudarperfil')
+        ImageButton:
+            pos_hint:{'right':0.5,'top':0.75}
+            size_hint:0.5,0.15
+            source:'icones/foto_perfil.png'
+            on_release:app.mudar_pagina('mudarperfil')
+
+
+        # Mudar vendedor
+        LabelButton:
+            text:'Acompanhar vendedor'
+            pos_hint:{'right':0.9,'top':0.55}
+            size_hint:0.5,0.15
+            on_release:app.mudar_pagina('acompanharvendedor')
+        ImageButton:
+            pos_hint:{'right':0.5,'top':0.55}
+            size_hint:0.5,0.15
+            source:'icones/adicionar_vendedor.png'
+            on_release:app.mudar_pagina('acompanharvendedor')
+        
+
+        # Ver todas as vendas
+        LabelButton:
+            text:'Ver todas as vendas'
+            pos_hint:{'right':0.9,'top':0.35}
+            size_hint:0.5,0.15
+            on_release:app.carregar_vendas()
+        ImageButton:
+            pos_hint:{'right':0.5,'top':0.35}
+            size_hint:0.5,0.15
+            source:'icones/vendas_empresa.png'
+            on_release:app.carregar_vendas()
+
+        #Barra inferior
+        FloatLayout:
+            pos_hint: {'right':1 , 'top': 0.12}
+            size_hint: 1,0.12 
+            canvas:
+                Color:
+                    rgb:(0, 0.556, 0.611)
+                Rectangle:
+                    pos:self.pos
+                    size:self.size
+            ImageButton:
+                pos_hint:{'right':0.33,'top':1}
+                size_hint:0.33,1
+                on_release:app.mudar_pagina('homepage')
+                source:'icones/voltar.png'
