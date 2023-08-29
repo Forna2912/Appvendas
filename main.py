@@ -6,22 +6,21 @@ import requests
 from BanerVenda import *
 from BannerVendedor import *
 import os
-import certifi
 from functools import partial
 import json
 from myfirebase import MyFireBase
 from datetime import date
 
-os.environ['SSL_CERT_FILE'] = certifi.where()
-
 GUI=Builder.load_file('main.kv')
 
+    
 class MainApp(App):
     produto=None
     cliente=None
     unidade=None
 
     def build(self):
+
         self.firebase=MyFireBase()
         return GUI
 
@@ -86,11 +85,17 @@ class MainApp(App):
             homepage=self.root.ids['homepage']
             homepage.ids['total_vendas'].text=f'TOTAL DE VENDAS : R$:{self.total_vendas:.2f}'
 
+
             #preencher vendas
             try:
                 self.vendas = requisicao_dict["vendas"]
                 pagina_homepage = self.root.ids['homepage']
                 lista_vendas = pagina_homepage.ids['lista_vendas']
+
+                #deletar vendas
+                for item in list(lista_vendas.children):
+                    lista_vendas.remove_widget(item)
+
                 for id_venda in self.vendas:
                     venda=self.vendas[id_venda]
                     baner = BanerVenda(
@@ -112,7 +117,8 @@ class MainApp(App):
             lista_equipe=self.equipe.split(',')
             pagina_listavendedores=self.root.ids['salesmano']
             lista_vendedores=pagina_listavendedores.ids['lista_vendas']
-
+            for item in list(lista_vendedores.children):
+                lista_vendedores.remove_widget(item)
             for id_vendedor_equipe in lista_equipe:
                 if id_vendedor_equipe != '':
                     banner_vendedor=BannerVendedor(id_vendedor=id_vendedor_equipe)
@@ -122,6 +128,7 @@ class MainApp(App):
             self.mudar_pagina('homepage')
         except:
             pass
+
     def mudar_pagina(self,destino):
         Gerenciador_telas=self.root.ids['screen_manager']
         Gerenciador_telas.current=destino
@@ -150,7 +157,10 @@ class MainApp(App):
             if id_vendedor_adicionado in equipe:
                 mensagem_texto.text='Vendedor ja faz parte da equipe'
             else:
-                self.equipe=self.equipe + f',{id_vendedor_adicionado}'
+                if self.equipe=='':
+                    self.equipe=self.equipe + f'{id_vendedor_adicionado}'
+                else:
+                    self.equipe=self.equipe + f',{id_vendedor_adicionado}'
                 requests.patch(f'https://aplicativo-kung-fu-default-rtdb.firebaseio.com/{self.local_id}.json?auth={self.id_token}',data=json.dumps({'equipe':self.equipe}))
                 mensagem_texto.text='Vendedor adicionado'
 
@@ -163,6 +173,7 @@ class MainApp(App):
         
     def mudar_foto_perfil(self,foto,*args):
         foto_perfil=self.root.ids['foto_perfil']
+        self.avatar=foto
         foto_perfil.source=f'icones/fotos_perfil/{foto}'
         requests.patch(f'https://aplicativo-kung-fu-default-rtdb.firebaseio.com/{self.local_id}.json?auth={self.id_token}',data=json.dumps({'foto':foto}))
         self.mudar_pagina('ajustespage')
@@ -236,8 +247,11 @@ class MainApp(App):
             pagina_adicionarvendas.ids['preco_total_label'].color=(1,0,0,1)
         else:
             try:
-                preco=float(preco)
-                pagina_adicionarvendas.ids['preco_total_label'].color=(1,1,1,1)
+                if float(preco)>0 and float(preco)<1000000:
+                    preco=float(preco)
+                    pagina_adicionarvendas.ids['preco_total_label'].color=(1,1,1,1)
+                else:
+                    pagina_adicionarvendas.ids['preco_total_label'].color=(1,0,0,1)
             except:
                 pagina_adicionarvendas.ids['preco_total_label'].color=(1,0,0,1)
 
@@ -245,8 +259,11 @@ class MainApp(App):
             pagina_adicionarvendas.ids['quantidade_total_label'].color=(1,0,0,1)
         else:
             try:
-                quantidade=float(quantidade)
-                pagina_adicionarvendas.ids['quantidade_total_label'].color=(1,1,1,1)
+                if float(quantidade)>0 and float(quantidade)<1000000:
+                    quantidade=float(quantidade)
+                    pagina_adicionarvendas.ids['quantidade_total_label'].color=(1,1,1,1)
+                else:
+                    pagina_adicionarvendas.ids['quantidade_total_label'].color=(1,0,0,1)
             except:
                 pagina_adicionarvendas.ids['quantidade_total_label'].color=(1,0,0,1)
 
@@ -257,6 +274,7 @@ class MainApp(App):
             info={'cliente':cliente,'produto':produto,'foto_cliente':foto_cliente,'foto_produto':foto_produto,'data':label_data,'unidade':unidade,'preco':preco,'quantidade':quantidade}
             requests.post(f'https://aplicativo-kung-fu-default-rtdb.firebaseio.com/{self.local_id}/vendas.json?auth={self.id_token}',data=json.dumps(info))
             self.mudar_pagina('homepage')
+            self.reset_adicionarvendas()
             baner=BanerVenda(cliente=cliente,
                     fotocliente=foto_cliente,
                     produto=produto,
@@ -273,6 +291,27 @@ class MainApp(App):
             self.total_vendas=requisicao_dict+preco
             requests.patch(f'https://aplicativo-kung-fu-default-rtdb.firebaseio.com/{self.local_id}.json?auth={self.id_token}',data=json.dumps({'total_vendas':self.total_vendas}))
             pagina_homepage.ids['total_vendas'].text=f'TOTAL DE VENDAS : R$:{self.total_vendas:.2f}'
+            self.produto=None
+            self.cliente=None
+            self.unidade=None
+
+    def reset_adicionarvendas(self):
+        pagina_adicionarvendas=self.root.ids['adicionarvendas']
+        listas_vendas=[pagina_adicionarvendas.ids['lista_clientes'],pagina_adicionarvendas.ids['lista_produtos']]
+        #pintar tudo de branco
+        for lista in listas_vendas:
+            for item in list(lista.children):
+                item.color=(1,1,1,1)
+
+        pagina_adicionarvendas.ids['preco_total_label'].color=(1,1,1,1)
+        pagina_adicionarvendas.ids['quantidade_total_label'].color=(1,1,1,1)
+        pagina_adicionarvendas.ids['selecionar_cliente'].color=(1,1,1,1)
+        pagina_adicionarvendas.ids['selecionar_produto'].color=(1,1,1,1)
+        pagina_adicionarvendas.ids['unidades'].color=(1,1,1,1)
+        pagina_adicionarvendas.ids['litros'].color=(1,1,1,1)
+        pagina_adicionarvendas.ids['Kg'].color=(1,1,1,1)
+        pagina_adicionarvendas.ids['preco_total'].text=''
+        pagina_adicionarvendas.ids['quantidade'].text=''
 
         self.produto=None
         self.cliente=None
@@ -280,12 +319,11 @@ class MainApp(App):
 
     def carregar_vendas(self):
         #pega informação
-        requisicao=requests.get(f'https://aplicativo-kung-fu-default-rtdb.firebaseio.com/.json?orderBy="id_vendedor"?auth={self.id_token}')
+        requisicao = requests.get(f'https://aplicativo-kung-fu-default-rtdb.firebaseio.com/.json?orderBy="id_vendedor"')
         requisicao_dict=requisicao.json()
-
         pagina_todasvendas=self.root.ids['vervendas']
         lista_vendas=pagina_todasvendas.ids['lista_vendas']
-
+        
         #preencher foto perfil
         foto_perfil=self.root.ids['foto_perfil']
         foto_perfil.source=f'icones/fotos_perfil/hash.png'
@@ -358,6 +396,18 @@ class MainApp(App):
         foto_perfil.source=f'icones/fotos_perfil/{foto}'
 
         self.mudar_pagina('vendasoutrovendedor')
+    
+    def sair(self):
+        paginalogin=self.root.ids['paginalogin']
+        email=paginalogin.ids['email']
+        senha=paginalogin.ids['senha']
+        email.text=""
+        senha.text=""
+        foto_perfil=self.root.ids['foto_perfil']
+        foto_perfil.source=f'icones/fotos_perfil/hash.png'
+        os.remove('refreshtoken.txt')
+        self.mudar_pagina("paginalogin")
 
-        
+    
+
 MainApp().run()

@@ -17,17 +17,21 @@
             hint_text: 'E-mail'
             pos_hint: {'right': 0.9, 'top':0.7 }
             size_hint: 0.8, 0.1
+            multiline: False
+            softinput_mode: 'below_target'
         TextInput:
             id:senha
             hint_text: 'Senha'
             pos_hint: {'right': 0.9, 'top':0.55 }
             size_hint: 0.8, 0.1
+            multiline: False
+            softinput_mode: 'below_target'
         ImageButton:
             id:imagem_senha
-            pos_hint:{'right':1.02,'top':0.54}
-            size_hint:0.35,0.08
+            pos_hint:{'right':0.85,'top':0.54}
+            size_hint:0.1,0.08
             source:'icones/senha_visivel.png'
-            on_release:app.esconder_senha()
+            on_release:app.esconder_senha() 
         Label:
             id:mensagem_login
             text:'[color=#00CFDB]Faça seu login[/color]'

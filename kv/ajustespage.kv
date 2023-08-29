@@ -28,7 +28,7 @@
         ImageButton:
             pos_hint:{'right':0.5,'top':0.75}
             size_hint:0.5,0.15
-            source:'icones/foto_perfil.png'
+            source:'icones/settings.png'
             on_release:app.mudar_pagina('mudarperfil')
 
 
@@ -58,9 +58,10 @@
             on_release:app.carregar_vendas()
 
         #Barra inferior
-        FloatLayout:
+        GridLayout:
             pos_hint: {'right':1 , 'top': 0.12}
             size_hint: 1,0.12 
+            cols:3
             canvas:
                 Color:
                     rgb:(0, 0.556, 0.611)
@@ -68,7 +69,7 @@
                     pos:self.pos
                     size:self.size
             ImageButton:
-                pos_hint:{'right':0.33,'top':1}
-                size_hint:0.33,1
                 on_release:app.mudar_pagina('homepage')
                 source:'icones/voltar.png'
+            Label:
+            Label:

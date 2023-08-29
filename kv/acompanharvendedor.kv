@@ -28,6 +28,7 @@
             pos_hint: {'right': 0.9,'top': 0.7}
             size_hint: 0.8, 0.1
             id:input_id_outrovendedor
+            multiline: False
         Label:
             text: ""
             markup:True
@@ -38,9 +39,10 @@
         
         
         #Barra inferior
-        FloatLayout:
+        GridLayout:
             pos_hint: {'right':1 , 'top': 0.12}
             size_hint: 1,0.12 
+            cols:3
             canvas:
                 Color:
                     rgb:(0, 0.556, 0.611)
@@ -48,7 +50,8 @@
                     pos:self.pos
                     size:self.size
             ImageButton:
-                pos_hint:{'right':0.33,'top':1}
-                size_hint:0.33,1
                 on_release:app.mudar_pagina('ajustespage');root.ids.mensagem_outrovendedor.text='';root.ids.input_id_outrovendedor.text=''
                 source:'icones/voltar.png'
+            Label:
+            Label:
+            

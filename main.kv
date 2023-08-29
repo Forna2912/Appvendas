@@ -9,7 +9,7 @@
 #:include  kv/vendasoutrovendedor.kv
 
 FloatLayout:
-    canvas:
+    canvas.before:
         Color:
             rgb:(0.00392, 0.0862, 0.133)
         Rectangle:
@@ -20,6 +20,7 @@ FloatLayout:
         size_hint: 1 , 0.2
         id:foto_perfil
         source:'icones/hash.png'
+
     ScreenManager:
         pos_hint:{'right':1,'top':0.7}
         size_hint: 1 , 0.7

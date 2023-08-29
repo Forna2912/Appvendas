@@ -74,7 +74,7 @@
             text:'Cancelar'
             pos_hint:{'right':0.45,'top':0.2}
             size_hint:0.4,0.2
-            on_release:app.mudar_pagina('homepage')
+            on_release:app.mudar_pagina('homepage');app.reset_adicionarvendas()
 
         LabelButton:
             canvas.before:
@@ -98,6 +98,8 @@
             TextInput:
                 id: preco_total
                 hint_text: 'Digite apenas números'
+                multiline: False
+                input_type:'number'
 
         #quantidade
         GridLayout:
@@ -110,5 +112,7 @@
             TextInput:
                 id: quantidade
                 hint_text: '0'
+                multiline: False
+                input_type:'number'
 
         
