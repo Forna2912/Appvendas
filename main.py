@@ -10,6 +10,7 @@ from functools import partial
 import json
 from myfirebase import MyFireBase
 from datetime import date
+from kivy.core.window import Window
 
 GUI=Builder.load_file('main.kv')
 
@@ -20,8 +21,8 @@ class MainApp(App):
     unidade=None
 
     def build(self):
-
         self.firebase=MyFireBase()
+        Window.softinput_mode='below_target'
         return GUI
 
     def on_start(self):
