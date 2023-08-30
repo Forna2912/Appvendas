@@ -11,24 +11,21 @@ import json
 from myfirebase import MyFireBase
 from datetime import date
 from kivy.core.window import Window
-import time
 
 GUI=Builder.load_file('main.kv')
 
-    
 class MainApp(App):
 
-    def build(self):
-        self.root = LoadingScreen()
-        time.sleep(3)
-        self.firebase = MyFireBase()  
-        self.root = GUI 
-        Window.softinput_mode = 'below_target'
-        return self.root
-    
     produto=None
     cliente=None
     unidade=None
+
+    def build(self):
+        self.firebase = MyFireBase()  
+        Window.softinput_mode = 'below_target'
+        return self.root
+    
+    
     def on_start(self):
         #carregar foto perfil
         arquivos=os.listdir('icones/fotos_perfil')
